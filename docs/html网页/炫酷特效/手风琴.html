@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯CSS手风琴轮播图 | 无JS版本</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: system-ui, 'Segoe UI', sans-serif;
+        }
+
+        /* 手风琴容器 - 使用 Flex 布局 */
+        .contain {
+            width: 1050px;
+            display: flex;
+            gap: 2px;
+            background: #0f0f1a;
+            border-radius: 16px;
+            padding: 8px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.3);
+        }
+
+        /* 每个图片项 */
+        .contain .carousel-item {
+            flex: 1;                     /* 默认所有项等宽 */
+            height: 400px;
+            transition: all 0.4s ease-out;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
+        }
+
+        /* 当鼠标悬停在容器上时，所有项收缩 */
+        .contain:hover .carousel-item {
+            flex: 0.4;
+        }
+
+        /* 悬停在某一项时，该项展开 */
+        .contain .carousel-item:hover {
+            flex: 3;
+        }
+
+        /* 标题样式 - 使用伪元素读取 data-title 属性 */
+        .contain .carousel-item::after {
+            content: attr(data-title);   /* 从 data-title 获取标题文字 */
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            color: white;
+            font-size: 1.1rem;
+            line-height: 50px;
+            padding-left: 20px;
+            letter-spacing: 1px;
+            transform: translateY(100%);  /* 默认隐藏 */
+            transition: transform 0.3s ease;
+            pointer-events: none;          /* 避免干扰悬停事件 */
+        }
+
+        /* 悬停时标题上浮显示 */
+        .contain .carousel-item:hover::after {
+            transform: translateY(0);
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1100px) {
+            .contain {
+                width: 90%;
+                margin: 20px auto;
+            }
+            .contain .carousel-item {
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="contain">
+    <!-- 图片项：背景图片 + data-title 属性存储标题 -->
+    <div class="carousel-item" 
+         style="background-image: url('https://picsum.photos/id/1015/800/500');" 
+         data-title="🏔️ 山水风景"></div>
+    <div class="carousel-item" 
+         style="background-image: url('https://picsum.photos/id/104/800/500');" 
+         data-title="🐕 可爱动物"></div>
+    <div class="carousel-item" 
+         style="background-image: url('https://picsum.photos/id/15/800/500');" 
+         data-title="🌲 森林小路"></div>
+    <div class="carousel-item" 
+         style="background-image: url('https://picsum.photos/id/169/800/500');" 
+         data-title="🌊 日出海岸"></div>
+    <div class="carousel-item" 
+         style="background-image: url('https://picsum.photos/id/155/800/500');" 
+         data-title="🌃 城市夜景"></div>
+</div>
+</body>
+</html>
