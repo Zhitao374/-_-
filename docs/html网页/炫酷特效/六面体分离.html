@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯CSS - 正方体六面分离</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 800px;
+        }
+
+        /* 正方体容器 - 添加自动旋转动画 */
+        .cube {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: autoRotate 6s infinite linear;
+        }
+
+        /* 自动旋转 */
+        @keyframes autoRotate {
+            from { transform: rotateX(0deg) rotateY(0deg); }
+            to   { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* 六个面公用样式 */
+        .face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            transition: all 0.8s cubic-bezier(0.5, 1.2, 0.5, 1);
+        }
+
+        /* 各面初始位置 */
+        /* .front  { background: #ff6b6b; transform: translateZ(100px); } */
+        .front  { background: url('https://picsum.photos/id/16/2500/1667') no-repeat center / cover; transform: translateZ(100px); }
+        .back   { background: #0abde3; transform: rotateY(180deg) translateZ(100px); }
+        .right  { background: #feca57; transform: rotateY(90deg) translateZ(100px); }
+        .left   { background: #48dbfb; transform: rotateY(-90deg) translateZ(100px); }
+        .top    { background: #5f27cd; transform: rotateX(90deg) translateZ(100px); }
+        .bottom { background: #00d2d3; transform: rotateX(-90deg) translateZ(100px); }
+
+        /* 鼠标悬停时触发爆炸分离 */
+        .cube:hover .front  { transform: translateZ(350px);  }
+        .cube:hover .back   { transform: rotateY(180deg) translateZ(350px);  }
+        .cube:hover .right  { transform: rotateY(90deg) translateZ(350px);  }
+        .cube:hover .left   { transform: rotateY(-90deg) translateZ(350px);  }
+        .cube:hover .top    { transform: rotateX(90deg) translateZ(350px);  }
+        .cube:hover .bottom { transform: rotateX(-90deg) translateZ(350px);  }
+    </style>
+</head>
+<body>
+    <div class="cube">
+        <div class="face front">前</div>
+        <div class="face back">后</div>
+        <div class="face right">右</div>
+        <div class="face left">左</div>
+        <div class="face top">上</div>
+        <div class="face bottom">下</div>
+    </div>
+</body>
+</html>

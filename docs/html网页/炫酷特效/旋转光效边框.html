@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流光边框+文字 | 统一渐变与动画</title>
+    <style>
+        /* ========== 全局样式 ========== */
+        body {
+            background: #0a0c15;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', system-ui, monospace;
+        }
+
+        /* 定义共用变量：渐变颜色序列、动画时长、背景尺寸 */
+        :root {
+            --flow-colors: #0ff, #f0f, #ff0, #0ff;  /* 流光色轮 */
+            --flow-duration: 3s;                    /* 动画周期 */
+            --flow-bg-size: 300% 100%;               /* 背景拉伸倍数 */
+        }
+
+        /* 流光边框容器 */
+        .flow-border {
+            position: relative;
+            width: 340px;
+            height: 200px;
+            background: #11131f;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        /* ---------- 边框流光层（使用变量中的渐变） ---------- */
+        .flow-border::before {
+            content: "";
+            position: absolute;
+            inset: -3px;
+            border-radius: 26px;
+            background: linear-gradient(90deg, var(--flow-colors));
+            background-size: var(--flow-bg-size);
+            z-index: -2;
+            animation: flow var(--flow-duration) linear infinite;
+        }
+
+        /* 内层遮罩（保持不变） */
+        .flow-border::after {
+            content: "";
+            position: absolute;
+            inset: 2px;
+            background: #11131f;
+            border-radius: 22px;
+            z-index: -1;
+        }
+
+        /* ---------- 文字流光：共用同一套变量和动画 ---------- */
+        .flow-border .text {
+            /* 备选颜色（降级） */
+            color: white;
+            background: linear-gradient(90deg, var(--flow-colors));
+            background-size: var(--flow-bg-size);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: flow var(--flow-duration) linear infinite;
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 0 6px rgba(0, 255, 255, 0.4));
+        }
+
+        /* 共用动画：移动背景位置 */
+        @keyframes flow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 300% 0%; }
+        }
+
+        /* 悬停加速：同时改变变量值，实现边框+文字同步加速 */
+        .flow-border:hover {
+            --flow-duration: 1s;   /* 仅修改变量，动画自动继承新速度 */
+        }
+    </style>
+</head>
+<body>
+    <div class="flow-border">
+        <span class="text">✨ 流光溢彩 ✨</span>
+    </div>
+</body>
+</html>

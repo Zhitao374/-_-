@@ -8,11 +8,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/core.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/addons/core-dark.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css">
+
+  <!-- 2. 在<body>的<script>中添加插件JS (放在docsify核心库之后) -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css">
   <style>
-  .sidebar ul li{
-    padding-left: 8px;
-  }
+    .content{
+      padding: 0;
+    }
+    .sidebar>h1 {
+      border-bottom: solid 2px #e96900;
+      font-weight: 800;
+    }
+
   /* 手机端优化：让内容区域更宽，字体更紧凑 */
   @media only screen and (max-width: 768px) {
     
@@ -96,11 +104,15 @@
       name: 'Python 知识库',     // 网站标题
       repo: '',                          // 不需要可以留空
       loadSidebar: true,                 // 启用侧边栏（重要！）
-      subMaxLevel: 2,                    // 侧边栏显示到二级标题
-      auto2top: true                     // 切换页面时自动回到顶部
+      subMaxLevel: 2,                    // 侧边栏显示到三级标题
+      sidebarDisplayLevel: 2,            // 初始只显示一级目录 (关键配置)
+      auto2top: true,                     // 切换页面时自动回到顶部
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      }
     }
   </script>
-  <!-- Docsify v4 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D翻转文字 | 纯CSS特效</title>
+    <style>
+        body {
+            background: radial-gradient(circle at 30% 10%, #2b3b4e, #0a0f1a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Impact', 'Segoe UI', sans-serif;
+            margin: 0;
+        }
+        .flip-text {
+            perspective: 800px;
+            cursor: pointer;
+        }
+        .flip-text span {
+            display: inline-block;
+            font-size: 4rem;
+            font-weight: bold;
+            color: #ffd966;
+            text-transform: uppercase;
+            transition: transform 0.4s ease;
+            transform-style: preserve-3d;
+            letter-spacing: 8px;
+        }
+        .flip-text:hover span {
+            transform: rotateX(180deg);
+            color: #6efff0;
+            text-shadow: 0 0 8px cyan;
+        }
+        /* 提示装饰 */
+        .desc {
+            position: absolute;
+            bottom: 40px;
+            color: #bbd4ff;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="flip-text">
+        <span>3D FLIP</span>
+    </div>
+    <div class="desc">✨ 悬停触发 X轴 180° 翻转 ✨</div>
+</body>
+</html>
