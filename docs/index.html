@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/core.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/addons/core-dark.min.css">
+  <style>
+  /* 手机端优化：让内容区域更宽，字体更紧凑 */
+  @media only screen and (max-width: 768px) {
+    
+    .sidebar-toggle-button {
+      position: fixed;
+      top: 15px;  /* 控制距离顶部的距离 */
+      left: 15px; /* 控制距离左侧的距离 */
+      right: auto; /* 重置默认样式 */
+      bottom: auto;/* 重置默认样式 */
+      /* 放大按钮，让它更容易点击 */
+      width: 24px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: nowrap;
+      flex-direction: column;
+    }
+     /* 可选：同时放大按钮里面的图标 */
+    .sidebar-toggle-button span {
+      width: 100%;
+    }
+    /* 主体内容区域 */
+    .content {
+      padding: 10px 12px !important;
+      max-width: 100% !important;
+    }
+    
+    /* 文章正文 */
+    .markdown-section {
+      font-size: 14px !important;  /* 原本通常是 16px */
+      line-height: 1.5 !important; /* 稍微缩小行距，让每屏显示更多行 */
+      max-width: 95%;
+    }
+    
+    /* 一级标题 */
+    .markdown-section h1 {
+      font-size: 1.6rem !important;
+    }
+    
+    /* 二级标题 */
+    .markdown-section h2 {
+      font-size: 1.3rem !important;
+    }
+    
+    /* 代码块：允许水平滚动 */
+    .markdown-section pre,
+    .markdown-section code {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    
+    /* 侧边栏宽度稍微减小，让主区域更宽 */
+    .sidebar {
+      width: 220px !important;
+    }
+    
+    /* 当侧边栏隐藏时，内容完全填充 */
+    body.close .content {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
+    
+    /* 搜索框等小部件也压缩一下边距 */
+    .search {
+      margin: 0 10px !important;
+    }
+  }
+  
+  /* 全局：让表格也可以滚动（如果表格太宽） */
+  .markdown-section table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'Python 一级考试知识库',     // 网站标题
+      repo: '',                          // 不需要可以留空
+      loadSidebar: true,                 // 启用侧边栏（重要！）
+      subMaxLevel: 2,                    // 侧边栏显示到二级标题
+      auto2top: true                     // 切换页面时自动回到顶部
+    }
+  </script>
+  <!-- Docsify v4 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+</body>
+</html>
