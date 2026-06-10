@@ -85,8 +85,8 @@ class MemoryGame:    # 1 定义记忆配对游戏类
                 # 4 配对失败，延迟翻回
                 self.pending = (r1, c1, r, c) # 5 存储待翻回的卡片对
                 # 5 延迟翻回游戏板按钮
-                self.pending_id = self.root.after(800, self._reset_cards, r1, c1, r, c) # 4 延迟翻回游戏板按钮
-                self.first = None # 4 重置第一次点击的按钮
+                self.pending_id = self.root.after(800, self._reset_cards, r1, c1, r, c) # 5 延迟翻回游戏板按钮
+                self.first = None # 5 重置第一次点击的按钮
 
     def _reveal_card(self, r, c): # 4 揭示游戏板按钮
         self.buttons[r][c].config(text=self.data[r][c], state=tk.DISABLED) # 4 揭示游戏板按钮
