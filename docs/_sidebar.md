@@ -11,6 +11,9 @@
     - **turtle 专题**
         - [turtle 知识点](/python知识点/python_海龟绘图.md)
 
+    - **Python小游戏**
+        - [记忆游戏](/Python小游戏/记忆配对游戏.md)
+
 
 - **Html网页**
     - **纯CSS网页特效**
