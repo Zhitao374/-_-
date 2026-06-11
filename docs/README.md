@@ -8,3 +8,5 @@
 ## 考试相关
 
 电子学会考级地址[https://www.qceit.org.cn/bos/login.html](https://www.qceit.org.cn/bos/login.html)
+
+<center>&copy;新剑桥-知识库</center>
