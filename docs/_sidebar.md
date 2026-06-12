@@ -21,4 +21,6 @@
         - [六面体分离](/html网页/特效md文件/六面体分离.md)
         - [3D翻转文字](/html网页/特效md文件/3D翻转文字.md)
         - [旋转光效边框](/html网页/特效md文件/旋转光效边框.md)
+        - [LoremPicsum图片](/html网页/特效md文件/LoremPicsum图片.md)
+        - [纯CSS百叶窗轮播图](/html网页/特效md文件/纯CSS百叶窗轮播图.md)
         - [手风琴](/html网页/特效md文件/手风琴.md)

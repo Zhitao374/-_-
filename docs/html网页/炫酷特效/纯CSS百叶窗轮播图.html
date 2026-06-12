@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>响应式百叶窗轮播图 - 完美适配窗口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-size: cover;
+            background: #1a1a2e;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        /* 容器：自动适应宽度，高度由内容撑开 */
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        /* 轮播区域：固定比例 16:9 */
+        .slider {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border: 8px solid #eee;
+            border-radius: 5px;
+            box-shadow: 0 7px 20px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        /* 每张图片图层（绝对定位） */
+        .img {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            perspective: 500px;
+        }
+        /* 碎片自动平分宽度，背景使用百分比偏移 */
+        .frag {
+            flex: 1;
+            height: 100%;
+            background-size: 400% 100%;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transform-origin: center right;
+            transform: rotateY(90deg) translateZ(100px) scale(1.5);
+            transition: transform 0.6s, opacity 0.6s, filter 1.5s;
+            filter: saturate(0) blur(8px) brightness(0.6) contrast(1.5);
+        }
+        /* 四个碎片的背景位置百分比偏移（确保每个碎片显示完整图像的一部分） */
+        .img .frag1 { background-position: 0% 50%; transition-delay: 0s; }
+        .img .frag2 { background-position: 33.33% 50%; transition-delay: 0.1s; }
+        .img .frag3 { background-position: 66.66% 50%; transition-delay: 0.2s; }
+        .img .frag4 { background-position: 100% 50%; transition-delay: 0.3s; }
+        /* 当前选中图片的碎片恢复3D并去除滤镜 */
+        #s1:checked ~ .slider .img1 .frag,
+        #s2:checked ~ .slider .img2 .frag,
+        #s3:checked ~ .slider .img3 .frag {
+            transform: rotateY(0) translateZ(0) scale(1);
+            filter: saturate(1) blur(0) brightness(1) contrast(1);
+            opacity: 1;
+        }
+        /* 图片资源（Lorem Picsum） */
+        .img1 .frag { background-image: url('https://picsum.photos/id/104/1200/675'); }
+        .img2 .frag { background-image: url('https://picsum.photos/id/15/1200/675'); }
+        .img3 .frag { background-image: url('https://picsum.photos/id/169/1200/675'); }
+        /* 隐藏单选框 */
+        input[name="s"] {
+            display: none;
+        }
+        /* 底部圆点控制条 - 相对定位，跟随轮播图下方 */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .controls label {
+            width: 40px;
+            height: 8px;
+            background: #000;
+            cursor: pointer;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+            border-radius: 4px;
+        }
+        .controls label:hover,
+        #s1:checked ~ .controls label:nth-of-type(1),
+        #s2:checked ~ .controls label:nth-of-type(2),
+        #s3:checked ~ .controls label:nth-of-type(3) {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <input type="radio" name="s" id="s1" checked>
+    <input type="radio" name="s" id="s2">
+    <input type="radio" name="s" id="s3">
+
+    <div class="slider">
+        <!-- 图片1 -->
+        <div class="img img1">
+            <div class="frag frag1"></div>
+            <div class="frag frag2"></div>
+            <div class="frag frag3"></div>
+            <div class="frag frag4"></div>
+        </div>
+        <!-- 图片2 -->
+        <div class="img img2">
+            <div class="frag frag1"></div>
+            <div class="frag frag2"></div>
+            <div class="frag frag3"></div>
+            <div class="frag frag4"></div>
+        </div>
+        <!-- 图片3 -->
+        <div class="img img3">
+            <div class="frag frag1"></div>
+            <div class="frag frag2"></div>
+            <div class="frag frag3"></div>
+            <div class="frag frag4"></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <label for="s1"></label>
+        <label for="s2"></label>
+        <label for="s3"></label>
+    </div>
+</div>
+</body>
+</html>

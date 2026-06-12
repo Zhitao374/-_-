@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Lorem Picsum 图片浏览器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #f1f5f9;
+            padding: 24px 20px;
+            color: #0f172a;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e293b, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .stats {
+            background: #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 60px;
+            margin-bottom: 28px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .search-box input {
+            padding: 8px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 40px;
+            width: 240px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+        }
+
+        .grid-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px -12px rgba(0,0,0,0.15);
+        }
+
+        .img-area {
+            height: 180px;
+            background: #e2e8f0;
+        }
+
+        .img-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-info {
+            padding: 10px 12px;
+            text-align: center;
+        }
+
+        .author {
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .id-badge {
+            font-size: 0.7rem;
+            color: #475569;
+            background: #f1f5f9;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-top: 6px;
+        }
+
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 40px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 60px;
+        }
+
+        .page-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .page-size-select, .jump-input {
+            padding: 6px 10px;
+            border-radius: 30px;
+            border: 1px solid #cbd5e1;
+            background: white;
+        }
+
+        .jump-input {
+            width: 70px;
+            text-align: center;
+        }
+
+        .jump-input.invalid {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .loading, .error {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 1rem;
+        }
+
+        .loading {
+            color: #3b82f6;
+        }
+
+        .error {
+            color: #b91c1c;
+            background: #fee2e2;
+            border-radius: 28px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            z-index: 1000;
+            animation: fadeOut 2s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            70% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 16px; }
+            .grid-view { gap: 12px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            .img-area { height: 130px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📸 Lorem Picsum</h1>
+        <div class="stats" id="statsInfo">加载中...</div>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 按作者或ID筛选...">
+        </div>
+    </div>
+
+    <div id="gallery"></div>
+    <div id="pagination"></div>
+    <footer>图片来自 picsum.photos | 点击卡片查看原图 | 翻页实时请求</footer>
+</div>
+
+<script>
+    // ----- 配置 -----
+    const PAGE_SIZES = [12, 24, 36, 48];
+    let currentPage = 1;
+    let currentSize = 24;
+    let searchKeyword = '';
+    let totalImages = null;
+    let maxValidPage = null;
+    
+    // 缓存
+    let cache = new Map();
+    let isLoading = false;
+    
+    // DOM
+    const galleryEl = document.getElementById('gallery');
+    const paginationEl = document.getElementById('pagination');
+    const statsSpan = document.getElementById('statsInfo');
+    const searchInput = document.getElementById('searchInput');
+    
+    // ----- 辅助函数 -----
+    const escapeHtml = (str) => str ? str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])) : '';
+    
+    // 生成图片 URL 的辅助函数
+    const getThumbUrl = (id, size) => `https://picsum.photos/id/${id}/${size}/${size}`;
+    const getOriginalUrl = (item) => item.download_url || `https://picsum.photos/id/${item.id}/${item.width || 2000}/${item.height || 2000}`;
+    
+    // 显示提示
+    const showMessage = (msg, isError = true) => {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = msg;
+        toast.style.background = isError ? '#dc2626' : '#10b981';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    };
+    
+    // 更新最大页码
+    const updateMaxPage = () => {
+        maxValidPage = totalImages ? Math.ceil(totalImages / currentSize) : null;
+    };
+    
+    // 验证页码是否有效
+    const isPageValid = async (page, size) => {
+        if (totalImages) {
+            return page >= 1 && page <= Math.ceil(totalImages / size);
+        }
+        try {
+            const res = await fetch(`https://picsum.photos/v2/list?page=${page}&limit=${size}`);
+            if (!res.ok) return false;
+            const data = await res.json();
+            return data.length > 0;
+        } catch {
+            return false;
+        }
+    };
+    
+    // ----- 请求单页数据 -----
+    const fetchPage = async (page, limit) => {
+        const res = await fetch(`https://picsum.photos/v2/list?page=${page}&limit=${limit}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const link = res.headers.get('Link');
+        let total = null;
+        if (link && link.includes('rel="last"')) {
+            const match = link.match(/page=(\d+)&limit=\d+>; rel="last"/);
+            if (match) total = parseInt(match[1]) * limit;
+        }
+        return { data, total };
+    };
+    
+    // 加载当前页
+    const loadPage = async (targetPage = null) => {
+        if (isLoading) return;
+        
+        const pageToLoad = targetPage ?? currentPage;
+        isLoading = true;
+        galleryEl.innerHTML = `<div class="loading">⏳ 加载第 ${pageToLoad} 页...</div>`;
+        paginationEl.innerHTML = '';
+        
+        try {
+            let images = cache.get(pageToLoad);
+            let totalFromApi = null;
+            
+            if (!images) {
+                const { data, total } = await fetchPage(pageToLoad, currentSize);
+                if (data.length === 0) throw new Error(`第 ${pageToLoad} 页没有图片数据`);
+                images = data;
+                totalFromApi = total;
+                cache.set(pageToLoad, images);
+                if (totalFromApi) {
+                    totalImages = totalFromApi;
+                    updateMaxPage();
+                }
+            }
+            
+            const hasNext = images.length === currentSize;
+            if (totalImages === null && !hasNext) {
+                totalImages = (pageToLoad - 1) * currentSize + images.length;
+                updateMaxPage();
+            }
+            
+            currentPage = pageToLoad;
+            renderGallery(images);
+            renderPagination(hasNext);
+            updateStats(images.length);
+            
+            const jumpInput = document.getElementById('jumpPage');
+            if (jumpInput) {
+                jumpInput.classList.remove('invalid');
+                jumpInput.value = currentPage;
+            }
+        } catch (err) {
+            galleryEl.innerHTML = `<div class="error">❌ ${err.message}<br>请返回有效页码</div>`;
+            showMessage(err.message, true);
+            const jumpInput = document.getElementById('jumpPage');
+            if (jumpInput) {
+                jumpInput.classList.add('invalid');
+                setTimeout(() => jumpInput?.classList.remove('invalid'), 2000);
+            }
+        } finally {
+            isLoading = false;
+        }
+    };
+    
+    // 渲染图片 (优化：使用 data-id 替代长 URL)
+    const renderGallery = (images) => {
+        const keyword = searchKeyword.trim().toLowerCase();
+        const filtered = keyword 
+            ? images.filter(img => img.author?.toLowerCase().includes(keyword) || String(img.id).includes(keyword))
+            : images;
+        
+        if (filtered.length === 0) {
+            galleryEl.innerHTML = `<div class="error">😢 没有匹配“${escapeHtml(keyword)}”的图片</div>`;
+            return;
+        }
+        
+        galleryEl.className = 'grid-view';
+        galleryEl.innerHTML = filtered.map(img => `
+            <div class="card" data-id="${img.id}" data-width="${img.width || 2000}" data-height="${img.height || 2000}">
+                <div class="img-area">
+                    <img src="${getThumbUrl(img.id, 240)}" alt="${escapeHtml(img.author)}" loading="lazy" 
+                         onerror="this.src='https://picsum.photos/id/1/240/240?grayscale'">
+                </div>
+                <div class="card-info">
+                    <div class="author">${escapeHtml(img.author) || '匿名'}</div>
+                    <div class="id-badge">ID: ${img.id}</div>
+                </div>
+            </div>
+        `).join('');
+        
+        // 事件委托：通过父容器监听点击，避免逐个绑定
+        galleryEl.onclick = (e) => {
+            const card = e.target.closest('.card');
+            if (!card) return;
+            const id = card.dataset.id;
+            const width = card.dataset.width;
+            const height = card.dataset.height;
+            if (id) {
+                window.open(`https://picsum.photos/id/${id}/${width}/${height}`, '_blank');
+            }
+        };
+    };
+    
+    // 更新统计
+    const updateStats = (loadedCount) => {
+        if (totalImages) {
+            const totalPages = Math.ceil(totalImages / currentSize);
+            statsSpan.innerText = `📷 第 ${currentPage} / ${totalPages} 页 · 共 ${totalImages} 张`;
+        } else {
+            statsSpan.innerText = `📷 第 ${currentPage} 页 · 当前 ${loadedCount} 张`;
+        }
+    };
+    
+    // 渲染分页控件
+    const renderPagination = (hasNext) => {
+        const hasPrev = currentPage > 1;
+        const totalPages = totalImages ? Math.ceil(totalImages / currentSize) : null;
+        
+        const html = `<div class="pagination">
+            <button class="page-btn" id="prevBtn" ${!hasPrev ? 'disabled' : ''}>◀ 上一页</button>
+            <div style="display:flex; gap:6px; align-items:center;">
+                ${totalPages ? `第 ${currentPage} / ${totalPages} 页` : `第 ${currentPage} 页`}
+            </div>
+            <button class="page-btn" id="nextBtn" ${!hasNext ? 'disabled' : ''}>下一页 ▶</button>
+            <select id="pageSizeSelect" class="page-size-select">
+                ${PAGE_SIZES.map(s => `<option value="${s}" ${s === currentSize ? 'selected' : ''}>${s}条/页</option>`).join('')}
+            </select>
+            <div style="display:flex; gap:6px;">
+                <input type="number" id="jumpPage" class="jump-input" min="1" placeholder="页码">
+                <button class="page-btn" id="jumpBtn">跳转</button>
+            </div>
+        </div>`;
+        
+        paginationEl.innerHTML = html;
+        
+        // 事件绑定（使用条件判断避免重复绑定）
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const sizeSelect = document.getElementById('pageSizeSelect');
+        const jumpBtn = document.getElementById('jumpBtn');
+        const jumpInput = document.getElementById('jumpPage');
+        
+        if (prevBtn) prevBtn.onclick = () => { if (hasPrev && !isLoading) loadPage(currentPage - 1); };
+        if (nextBtn) nextBtn.onclick = () => { if (hasNext && !isLoading) loadPage(currentPage + 1); };
+        
+        if (sizeSelect) {
+            sizeSelect.onchange = async (e) => {
+                const newSize = parseInt(e.target.value);
+                if (newSize !== currentSize) {
+                    currentSize = newSize;
+                    currentPage = 1;
+                    cache.clear();
+                    totalImages = null;
+                    maxValidPage = null;
+                    loadPage(1);
+                }
+            };
+        }
+        
+        if (jumpBtn && jumpInput) {
+            jumpBtn.onclick = async () => {
+                let target = parseInt(jumpInput.value);
+                if (isNaN(target) || jumpInput.value.trim() === '') {
+                    showMessage('请输入有效的页码', true);
+                    jumpInput.classList.add('invalid');
+                    setTimeout(() => jumpInput.classList.remove('invalid'), 1500);
+                    return;
+                }
+                if (target < 1) {
+                    showMessage('页码不能小于1', true);
+                    jumpInput.classList.add('invalid');
+                    setTimeout(() => jumpInput.classList.remove('invalid'), 1500);
+                    return;
+                }
+                if (totalImages && target > Math.ceil(totalImages / currentSize)) {
+                    showMessage(`页码不能超过 ${Math.ceil(totalImages / currentSize)}`, true);
+                    jumpInput.classList.add('invalid');
+                    setTimeout(() => jumpInput.classList.remove('invalid'), 1500);
+                    return;
+                }
+                if (target === currentPage) return;
+                
+                const isValid = await isPageValid(target, currentSize);
+                if (!isValid) {
+                    showMessage(`第 ${target} 页没有图片，无法跳转`, true);
+                    jumpInput.classList.add('invalid');
+                    setTimeout(() => jumpInput.classList.remove('invalid'), 1500);
+                    return;
+                }
+                jumpInput.classList.remove('invalid');
+                loadPage(target);
+            };
+            jumpInput.onkeypress = (e) => { if (e.key === 'Enter') jumpBtn.click(); };
+        }
+    };
+    
+    // ----- 搜索防抖 -----
+    let searchTimer;
+    searchInput.oninput = (e) => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+            searchKeyword = e.target.value;
+            const cached = cache.get(currentPage);
+            if (cached) {
+                renderGallery(cached);
+                updateStats(cached.length);
+            }
+        }, 280);
+    };
+    
+    // 启动
+    loadPage(1);
+</script>
+</body>
+</html>
