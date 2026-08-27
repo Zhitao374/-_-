@@ -6,12 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/core.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css">
+  <!-- 1. 统一使用 docsify@5 的官方主题 -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@5/lib/themes/vue.min.css">
+  
+  <!-- 2. 侧边栏折叠插件 (请使用 v2 版本，适配 docsify v5) -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse@2/lib/sidebar.min.css">
 
-  <!-- 2. 在<body>的<script>中添加插件JS (放在docsify核心库之后) -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css">
   <style>
     .sidebar>h1 {
       border-bottom: solid 2px #e96900;
@@ -109,19 +109,33 @@
   <script>
     window.$docsify = {
       name: 'Python 知识库',     // 网站标题
-      repo: '',                          // 不需要可以留空
       loadSidebar: true,                 // 启用侧边栏（重要！）
       subMaxLevel: 2,                    // 侧边栏显示到三级标题
-      sidebarDisplayLevel: 2,            // 初始只显示一级目录 (关键配置)
       auto2top: true,                     // 切换页面时自动回到顶部
       alias: {
         '/.*/_sidebar.md': '/_sidebar.md'
+      },
+      // 可选：v5 的搜索插件配置
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: '搜索...'
       }
     }
   </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-python.js"></script>
+    
+  <!-- 3. 核心库：明确指定使用 docsify@5 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/docsify.min.js"></script>
+  
+  <!-- 4. 插件：全部使用与 v5 兼容的版本 -->
+  <!-- 图片缩放 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@5/lib/plugins/zoom-image.min.js"></script>
+  <!-- 全文搜索 (v5 内置，但如需单独启用可引用) -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@5/lib/plugins/search.min.js"></script>
+  <!-- 复制代码 (确认是否兼容 v5，若不兼容可暂时移除) -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2/lib/docsify-copy-code.min.js"></script>
+  
+  <!-- 5. 侧边栏折叠功能：需在核心库之后加载对应的 JS -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse@latest/dist/sidebar.min.js"></script>
 </body>
 </html>
